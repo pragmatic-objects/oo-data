@@ -1,0 +1,30 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.pragmaticobjects.oo.data.anno;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ *
+ * @author skapral
+ */
+@Repeatable(Structure.List.class)
+@Target(ElementType.PACKAGE)
+@Retention(RetentionPolicy.CLASS)
+public @interface Structure {
+    String value();
+    String[] has();
+    
+    @Target(ElementType.PACKAGE)
+    @Retention(RetentionPolicy.CLASS)
+    @interface List {
+        Structure[] value();
+    }
+}
