@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pragmaticobjects.oo.data.model.source;
+package com.pragmaticobjects.oo.data.model.source.javapoet;
 
 import com.pragmaticobjects.oo.data.exception.TupleGenerationException;
 import com.pragmaticobjects.oo.data.model.declaration.Declaration;
+import com.pragmaticobjects.oo.data.model.source.SourceFile;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
 
@@ -21,24 +22,28 @@ import javax.annotation.processing.ProcessingEnvironment;
 public class SrcFileJavaPoet implements SourceFile {
     private final Declaration<?> declaration;
     private final Supplier<TypeSpec> typeSpec;
-    private final ProcessingEnvironment env;
+    private final Destination dest;
 
-    public SrcFileJavaPoet(Declaration<?> declaration, Supplier<TypeSpec> typeSpec, ProcessingEnvironment env) {
+    public SrcFileJavaPoet(Declaration<?> declaration, Supplier<TypeSpec> typeSpec, Destination dest) {
         this.declaration = declaration;
         this.typeSpec = typeSpec;
-        this.env = env;
+        this.dest = dest;
     }
 
+    public SrcFileJavaPoet(Declaration<?> declaration, Supplier<TypeSpec> typeSpec, ProcessingEnvironment env) {
+        this(
+            declaration,
+            typeSpec,
+            new DestFromProcessingEnvironment(env)
+        );
+    }
+    
     @Override
     public final void generate() {
         JavaFile javaFile = JavaFile.builder(
             declaration.packageName(),
             typeSpec.get()
         ).build();
-        try {
-            javaFile.writeTo(env.getFiler());
-        } catch (Throwable t) {
-            throw new TupleGenerationException(t);
-        }
+        dest.persist(javaFile);
     }
 }

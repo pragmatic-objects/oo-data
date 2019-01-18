@@ -9,7 +9,7 @@ import com.pragmaticobjects.oo.data.anno.Scalar;
 import com.pragmaticobjects.oo.data.anno.Structure;
 import com.pragmaticobjects.oo.data.model.declaration.Declaration;
 import com.pragmaticobjects.oo.data.model.manifest.Manifest;
-import com.pragmaticobjects.oo.data.model.source.SrcFileJavaPoet;
+import com.pragmaticobjects.oo.data.model.source.javapoet.SrcFileJavaPoet;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeSpec;
 import io.vavr.collection.HashSet;

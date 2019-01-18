@@ -8,7 +8,7 @@ package com.pragmaticobjects.oo.data.scalar.model.source;
 import com.pragmaticobjects.oo.data.anno.Scalar;
 import com.pragmaticobjects.oo.data.hacks.Hack;
 import com.pragmaticobjects.oo.data.model.declaration.Declaration;
-import com.pragmaticobjects.oo.data.model.source.SrcFileJavaPoet;
+import com.pragmaticobjects.oo.data.model.source.javapoet.SrcFileJavaPoet;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;

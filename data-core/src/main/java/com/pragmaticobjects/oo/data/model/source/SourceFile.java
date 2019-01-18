@@ -11,4 +11,9 @@ package com.pragmaticobjects.oo.data.model.source;
  */
 public interface SourceFile {
     void generate();
+    
+    
+    interface Inference {
+        SourceFile sourceFile();
+    }
 }

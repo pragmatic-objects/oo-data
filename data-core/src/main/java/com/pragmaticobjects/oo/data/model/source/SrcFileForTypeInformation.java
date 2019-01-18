@@ -1,5 +1,6 @@
 package com.pragmaticobjects.oo.data.model.source;
 
+import com.pragmaticobjects.oo.data.model.source.javapoet.SrcFileJavaPoet;
 import com.pragmaticobjects.oo.data.model.declaration.Declaration;
 import com.pragmaticobjects.oo.data.model.typeinfo.TypeInformation;
 import com.squareup.javapoet.FieldSpec;
