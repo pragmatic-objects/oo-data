@@ -9,6 +9,8 @@ import com.pragmaticobjects.oo.data.exception.TupleGenerationException;
 import com.pragmaticobjects.oo.data.model.declaration.Declaration;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
+
+import java.util.SortedSet;
 import java.util.function.Supplier;
 import javax.annotation.processing.ProcessingEnvironment;
 

@@ -8,7 +8,7 @@ package com.pragmaticobjects.oo.data.scalar;
 import com.pragmaticobjects.oo.data.AbstractProcessor;
 import com.pragmaticobjects.oo.data.anno.Scalar;
 import com.pragmaticobjects.oo.data.scalar.model.source.SrcFileScalar;
-import java.util.List;
+import io.vavr.collection.List;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
