@@ -33,7 +33,8 @@ import com.squareup.javapoet.TypeSpec;
 import java.lang.annotation.Annotation;
 
 /**
- *
+ * Tests for {@link SrcFileJavaPoet}.
+ * 
  * @author skapral
  */
 public class SrcFileJavaPoetTest extends TestsSuite {
@@ -42,7 +43,9 @@ public class SrcFileJavaPoetTest extends TestsSuite {
         "com.pragmaticobjects.test"
     );
     
-    
+    /**
+     * Ctor.
+     */
     public SrcFileJavaPoetTest() {
         super(
             new TestCase(

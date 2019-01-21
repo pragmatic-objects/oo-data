@@ -28,12 +28,17 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 /**
- *
+ * Path-based destination.
+ * 
  * @author skapral
  */
 public class DestToPath implements Destination {
     private final Path path;
 
+    /**
+     * Ctor.
+     * @param path Path
+     */
     public DestToPath(Path path) {
         this.path = path;
     }

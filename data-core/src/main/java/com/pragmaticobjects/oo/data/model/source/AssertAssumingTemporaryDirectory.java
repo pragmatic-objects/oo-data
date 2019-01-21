@@ -30,12 +30,17 @@ import java.nio.file.Path;
 import java.util.function.Function;
 
 /**
- *
+ * Assertion, that prepares a temporary directory for the test
+ * 
  * @author skapral
  */
 public class AssertAssumingTemporaryDirectory implements Assertion {
     private final Function<Path, Assertion> assertionFn;
 
+    /**
+     * Ctor.
+     * @param assertionFn Assertion constructor
+     */
     public AssertAssumingTemporaryDirectory(Function<Path, Assertion> assertionFn) {
         this.assertionFn = assertionFn;
     }

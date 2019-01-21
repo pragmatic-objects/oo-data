@@ -21,21 +21,4 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.pragmaticobjects.oo.data.model.manifest;
-
-import com.pragmaticobjects.oo.data.model.declaration.Declaration;
-import java.lang.annotation.Annotation;
-
-/**
- * Artifacts manifest - a context, holding and providing all known declarations.
- * 
- * @author skapral
- */
-public interface Manifest {
-    /**
-     * @param <A> Annotation type
-     * @param type Annotation type
-     * @return Declarations
-     */
-    <A extends Annotation> Iterable<Declaration<A>> declarations(Class<A> type);
-}
+package com.pragmaticobjects.oo.data.anno;

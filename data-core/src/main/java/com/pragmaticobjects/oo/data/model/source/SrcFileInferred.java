@@ -24,12 +24,17 @@
 package com.pragmaticobjects.oo.data.model.source;
 
 /**
- *
+ * Inferred {@link SourceFile}.
+ * 
  * @author skapral
  */
 public class SrcFileInferred implements SourceFile {
     private final Inference inference;
 
+    /**
+     * Ctor.
+     * @param inference Inference.
+     */
     public SrcFileInferred(Inference inference) {
         this.inference = inference;
     }

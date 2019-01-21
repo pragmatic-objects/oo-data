@@ -25,7 +25,6 @@ package com.pragmaticobjects.oo.data.model.source;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * Static source file for tests
@@ -37,6 +36,11 @@ public class SrcFileStatic implements SourceFile {
     private final Path path;
     private final String contents;
 
+    /**
+     * Ctor.
+     * @param path File path
+     * @param contents File contents
+     */
     public SrcFileStatic(Path path, String contents) {
         this.path = path;
         this.contents = contents;

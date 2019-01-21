@@ -1,46 +1,60 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * The MIT License
+ *
+ * Copyright 2019 skapral.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package com.pragmaticobjects.oo.data;
 
-import com.pragmaticobjects.oo.data.anno.Scalar;
-import com.pragmaticobjects.oo.data.model.declaration.DeclExplicit;
 import com.pragmaticobjects.oo.data.model.declaration.Declaration;
 import com.pragmaticobjects.oo.data.model.manifest.Manifest;
 import com.pragmaticobjects.oo.data.model.manifest.ManifestCombined;
 import com.pragmaticobjects.oo.data.model.manifest.ManifestFromPackageElement;
 import com.pragmaticobjects.oo.data.model.source.SourceFile;
 import io.vavr.collection.HashSet;
-import io.vavr.collection.Set;
 import java.lang.annotation.Annotation;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.Element;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 
 /**
- *
+ * Base annotation processor for all data generators.
+ * 
  * @author skapral
+ * @param <A> Annotation
  */
 public abstract class AbstractProcessor<A extends Annotation> extends javax.annotation.processing.AbstractProcessor {
     private final Class<A> annotationType;
     private final GenerationTaskInference<A> task;
 
+    /**
+     * Ctor.
+     * 
+     * @param annotationType Type of annotation
+     * @param task Generation task
+     */
     public AbstractProcessor(Class<A> annotationType, GenerationTaskInference<A> task) {
         this.annotationType = annotationType;
         this.task = task;
     }
-
-    /*private final Manifest manifest;
-    private final GenerationTaskInference<A> taskInf;
-
-    public AbstractProcessor(Manifest manifest, GenerationTaskInference<A> taskInf) {
-        this.manifest = manifest;
-        this.taskInf = taskInf;
-    }*/
 
     @Override
     public boolean process(java.util.Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -56,37 +70,22 @@ public abstract class AbstractProcessor<A extends Annotation> extends javax.anno
             for(Declaration<A> declaration : manifest.declarations(annotationType)) {
                 task.sourceFiles(declaration, manifest, processingEnv).forEach(SourceFile::generate);
             }
-            
-            /*
-            
-            PackageElement element = (PackageElement) annotation.getEnclosingElement();
-            A anno = annotation.getAnnotation(annotationType);
-            Declaration<A> decl = new DeclExplicit<>(anno, element.getQualifiedName().toString());
-            Manifest manifest = new ManifestFromPackageElement(element);
-            */
-            
-            //Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(annotation);
-            /*
-            for (Element element : elements) {
-                annoSource.annotations(element).forEach(anno -> {
-                    forEachFoundAnnotation(anno, (E) element);
-                });
-            }*/
         }
         return false;
     }
     
-    /*public final void forEachFoundAnnotation(A annotation, E annotatedElement) {
-        System.out.println(this.getClass().getName());
-        System.out.println("taskInf = " + taskInf);
-        System.out.println("annotatedElement = " + annotatedElement);
-        System.out.println("taskInf.tasks(annotation, annotatedElement, processingEnv) = " + taskInf.tasks(annotation, annotatedElement, processingEnv));
-        for(SourceFile file : taskInf.tasks(annotation, annotatedElement, processingEnv).iterable()) {
-            file.generate();
-        }
-    }*/
-    
+    /**
+     * Generation task, aka a set of {@link SourceFile} to generate
+     * 
+     * @param <A> Annotation
+     */
     public @FunctionalInterface interface GenerationTaskInference<A extends Annotation> {
+        /**
+         * @param declaration Declaration to process
+         * @param manifest Manifest with all available declarations from the context
+         * @param procEnv Processing environment
+         * @return The list of source files
+         */
         Iterable<SourceFile> sourceFiles(Declaration<A> declaration, Manifest manifest, ProcessingEnvironment procEnv);
     }
 }

@@ -26,9 +26,13 @@ package com.pragmaticobjects.oo.data.model.source.javapoet;
 import com.squareup.javapoet.JavaFile;
 
 /**
- *
+ * Destination for {@linkplain SrcFileJavaPoet}.
+ * 
  * @author skapral
  */
 public interface Destination {
+    /**
+     * @param file Java poet file to persist.
+     */
     void persist(JavaFile file);
 }

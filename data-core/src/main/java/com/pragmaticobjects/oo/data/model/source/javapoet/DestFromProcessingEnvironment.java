@@ -28,12 +28,17 @@ import java.io.IOException;
 import javax.annotation.processing.ProcessingEnvironment;
 
 /**
- *
+ * Destination, based on {@link ProcessingEnvironment} instance
+ * 
  * @author skapral
  */
 public class DestFromProcessingEnvironment implements Destination {
     private final ProcessingEnvironment env;
 
+    /**
+     * Ctor.
+     * @param env Processing environment
+     */
     public DestFromProcessingEnvironment(ProcessingEnvironment env) {
         this.env = env;
     }

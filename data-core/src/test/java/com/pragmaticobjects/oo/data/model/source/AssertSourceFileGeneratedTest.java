@@ -31,14 +31,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- *
+ * Tests for {@link AssertSourceFileGenerated}.
+ * 
  * @author skapral
  */
 public class AssertSourceFileGeneratedTest extends TestsSuite {    
     private final static Path TEST_FILE = Paths.get("srcfile");
     private final static Path WRONG_TEST_FILE = Paths.get("wrongsrcfile");
     
-    
+    /**
+     * Ctor.
+     */
     public AssertSourceFileGeneratedTest() {
         super(
             new TestCase(
