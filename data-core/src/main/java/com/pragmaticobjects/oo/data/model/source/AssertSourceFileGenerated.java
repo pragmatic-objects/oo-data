@@ -58,6 +58,6 @@ public class AssertSourceFileGenerated implements Assertion {
         file.generate();
         Assertions.assertThat(Files.exists(path)).isTrue();
         final String contents = new String(Files.readAllBytes(path));
-        Assertions.assertThat(this.contents).isEqualTo(contents);
+        Assertions.assertThat(this.contents).isEqualToNormalizingNewlines(contents);
     }
 }

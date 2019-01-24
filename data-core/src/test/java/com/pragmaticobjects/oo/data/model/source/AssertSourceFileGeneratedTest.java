@@ -27,8 +27,6 @@ import com.pragmaticobjects.oo.tests.AssertAssertionFails;
 import com.pragmaticobjects.oo.tests.AssertAssertionPasses;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * Tests for {@link AssertSourceFileGenerated}.
@@ -36,9 +34,6 @@ import java.nio.file.Paths;
  * @author skapral
  */
 public class AssertSourceFileGeneratedTest extends TestsSuite {    
-    private final static Path TEST_FILE = Paths.get("srcfile");
-    private final static Path WRONG_TEST_FILE = Paths.get("wrongsrcfile");
-    
     /**
      * Ctor.
      */
@@ -46,31 +41,46 @@ public class AssertSourceFileGeneratedTest extends TestsSuite {
         super(
             new TestCase(
                 "assertion fails on wrong test contents",
-                new AssertAssertionFails(
-                    new AssertSourceFileGenerated(
-                        new SrcFileStatic(TEST_FILE, "testcontents"),
-                        TEST_FILE,
-                        "wrongtestcontents"
+                new AssertAssumingTemporaryDirectory(tmpDir -> 
+                    new AssertAssertionFails(
+                        new AssertSourceFileGenerated(
+                            new SrcFileStatic(
+                                tmpDir.resolve("srcfile"),
+                                "testcontents"
+                            ),
+                            tmpDir.resolve("srcfile"),
+                            "wrongtestcontents"
+                        )
                     )
                 )
             ),
             new TestCase(
                 "assertion fails on wrong test file path",
-                new AssertAssertionFails(
-                    new AssertSourceFileGenerated(
-                        new SrcFileStatic(TEST_FILE, "testcontents"),
-                        WRONG_TEST_FILE,
-                        "testcontents"
+                new AssertAssumingTemporaryDirectory(tmpDir ->
+                    new AssertAssertionFails(
+                        new AssertSourceFileGenerated(
+                            new SrcFileStatic(
+                                tmpDir.resolve("srcfile"),
+                                "testcontents"
+                            ),
+                            tmpDir.resolve("wrongfile"),
+                            "testcontents"
+                        )
                     )
                 )
             ),
             new TestCase(
                 "assertion passes",
-                new AssertAssertionPasses(
-                    new AssertSourceFileGenerated(
-                        new SrcFileStatic(TEST_FILE, "testcontents"),
-                        TEST_FILE,
-                        "testcontents"
+                new AssertAssumingTemporaryDirectory(tmpDir ->
+                    new AssertAssertionPasses(
+                        new AssertSourceFileGenerated(
+                            new SrcFileStatic(
+                                tmpDir.resolve("srcfile"),
+                                "testcontents"
+                            ),
+                            tmpDir.resolve("srcfile"),
+                            "testcontents"
+                        )
                     )
                 )
             )

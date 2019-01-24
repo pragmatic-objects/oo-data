@@ -48,9 +48,9 @@ public class SrcFileStatic implements SourceFile {
 
     @Override
     public final void generate() {
-        if (path.isAbsolute()) {
+        if (!path.isAbsolute()) {
             throw new RuntimeException(
-                String.format("Absolute file paths are not allowed in SrcFileStatic instances: %s", path.toString())
+                String.format("Non-absolute file paths are not allowed in SrcFileStatic instances: %s", path.toString())
             );
         }
         try {
