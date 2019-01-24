@@ -27,13 +27,13 @@ import com.pragmaticobjects.oo.data.anno.Scalar;
 import com.pragmaticobjects.oo.data.anno.Structure;
 import com.pragmaticobjects.oo.data.model.declaration.Declaration;
 import com.pragmaticobjects.oo.data.model.manifest.Manifest;
+import com.pragmaticobjects.oo.data.model.source.javapoet.Destination;
 import com.pragmaticobjects.oo.data.model.source.javapoet.SrcFileJavaPoet;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeSpec;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.Set;
 import io.vavr.collection.Stream;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Modifier;
 
 /**
@@ -46,9 +46,9 @@ public class SrcFileStructure extends SrcFileJavaPoet {
      * Ctor.
      * @param manifest Manifest
      * @param declaration Declaration
-     * @param env Processing environment
+     * @param dest Destination
      */
-    public SrcFileStructure(Manifest manifest, Declaration<Structure> declaration, ProcessingEnvironment env) {
+    public SrcFileStructure(Manifest manifest, Declaration<Structure> declaration, Destination dest) {
         super(
             declaration,
             () -> {
@@ -74,7 +74,7 @@ public class SrcFileStructure extends SrcFileJavaPoet {
                     .addModifiers(Modifier.PUBLIC)
                     .build();
             },
-            env
+            dest
         );
     }
     

@@ -23,6 +23,8 @@
  */
 package com.pragmaticobjects.oo.data.anno;
 
+import io.vavr.collection.List;
+import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
@@ -57,5 +59,47 @@ public @interface Structure {
          * @return Items
          */
         Structure[] value();
+    }
+    
+    /**
+     * Fixed Structure value for tests
+     */
+    public static class Value implements Structure {
+        private final String value;
+        private final io.vavr.collection.List<String> has;
+
+        /**
+         * Ctor.
+         * @param value Structure's name
+         * @param has Structure's parts
+         */
+        public Value(String value, io.vavr.collection.List<String> has) {
+            this.value = value;
+            this.has = has;
+        }
+
+        /**
+         * Ctor.
+         * @param value Structure's name
+         * @param has Structure's parts
+         */
+        public Value(String value, String... has) {
+            this(value, io.vavr.collection.List.of(has));
+        }
+        
+        @Override
+        public final String value() {
+            return value;
+        }
+
+        @Override
+        public final String[] has() {
+            return has.toJavaArray(String.class);
+        }
+
+        @Override
+        public final Class<? extends Annotation> annotationType() {
+            return Structure.class;
+        }
     }
 }

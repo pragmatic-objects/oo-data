@@ -59,7 +59,6 @@ public abstract class AbstractProcessor<A extends Annotation> extends javax.anno
     @Override
     public boolean process(java.util.Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         processingEnv.getElementUtils();
-        
         for (TypeElement annotation : annotations) {
             Manifest manifest = HashSet.of(roundEnv)
                     .flatMap(env -> env.getElementsAnnotatedWith(annotation))

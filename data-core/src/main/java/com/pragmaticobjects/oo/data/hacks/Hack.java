@@ -23,6 +23,7 @@
  */
 package com.pragmaticobjects.oo.data.hacks;
 
+import com.sun.tools.javac.code.Type;
 import java.util.function.Supplier;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
@@ -39,6 +40,9 @@ public class Hack {
      * In annotation processors, retrieving an annotation field with {@link Class} type
      * ends with exception. There is no known way of working this around, but this
      * hack at least provides means to obtaining {@link TypeMirror} instance instead.
+     * 
+     * See also <a href="http://hauchee.blogspot.com/2015/12/compile-time-annotation-processing-getting-class-value.html">this</a>
+     * article.
      * 
      * @param supplier Method reference to the annotation field of type {@link Class}
      * @return {@link TypeMirror} instance.

@@ -23,6 +23,7 @@
  */
 package com.pragmaticobjects.oo.data.anno;
 
+import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
@@ -57,5 +58,38 @@ public @interface Scalar {
          * @return Items
          */
         Scalar[] value();
+    }
+
+    /**
+     * Fixed value of scalar for tests
+     */
+    public static class Value implements Scalar {
+        private final String value;
+        private final Class<?> type;
+
+        /**
+         * Ctor.
+         * @param value Scalar's name
+         * @param type Type
+         */
+        public Value(String value, Class<?> type) {
+            this.value = value;
+            this.type = type;
+        }
+
+        @Override
+        public final String value() {
+            return value;
+        }
+
+        @Override
+        public final Class<?> type() {
+            return type;
+        }
+
+        @Override
+        public final Class<? extends Annotation> annotationType() {
+            return Scalar.class;
+        }
     }
 }

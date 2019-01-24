@@ -26,6 +26,7 @@ package com.pragmaticobjects.oo.data.value;
 import com.pragmaticobjects.oo.data.AbstractProcessor;
 import com.pragmaticobjects.oo.data.anno.Scalar;
 import com.pragmaticobjects.oo.data.model.source.SrcFileForTypeInformation;
+import com.pragmaticobjects.oo.data.model.source.javapoet.DestFromProcessingEnvironment;
 import com.pragmaticobjects.oo.data.value.model.typeinfo.ScalarTypeInformation;
 import io.vavr.collection.List;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -51,7 +52,7 @@ public class ScalarValueProcessor extends AbstractProcessor<Scalar> {
             (anno, mani, procEnv) -> List.of(new SrcFileForTypeInformation(
                     new ScalarTypeInformation(anno),
                     anno,
-                    procEnv
+                    new DestFromProcessingEnvironment(procEnv)
                 )
             )
         );

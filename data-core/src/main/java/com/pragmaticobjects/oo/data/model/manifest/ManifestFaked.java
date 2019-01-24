@@ -21,43 +21,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.pragmaticobjects.oo.data.model.source;
+package com.pragmaticobjects.oo.data.model.manifest;
 
-import com.pragmaticobjects.oo.data.model.source.javapoet.SrcFileJavaPoet;
+import com.pragmaticobjects.oo.data.model.declaration.DeclExplicit;
 import com.pragmaticobjects.oo.data.model.declaration.Declaration;
-import com.pragmaticobjects.oo.data.model.source.javapoet.Destination;
-import com.pragmaticobjects.oo.data.model.source.javapoet.TypeInformation;
-import com.squareup.javapoet.FieldSpec;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeSpec;
+import io.vavr.collection.List;
+import java.lang.annotation.Annotation;
 
 /**
- * Source file, generated from provided {@link TypeInformation}.
+ * Faked instance of manifest for testing.
  * 
  * @author skapral
  */
-public class SrcFileForTypeInformation extends SrcFileJavaPoet {
+public class ManifestFaked implements Manifest {
+    private final String packageName;
+    private final List<Annotation> annotations;
+
     /**
      * Ctor.
      * 
-     * @param info Type information
-     * @param declaration Declaration instance
-     * @param dest Destination
+     * @param packageName Name of faked package
+     * @param annotations Annotations
      */
-    public SrcFileForTypeInformation(TypeInformation info, Declaration<?> declaration, Destination dest) {
-        super(
-            declaration,
-            () -> {
-                TypeSpec.Builder builder = TypeSpec.classBuilder(info.name());
-                for(FieldSpec field : info.fields()) {
-                    builder = builder.addField(field);
-                }
-                for(MethodSpec method : info.methods()) {
-                    builder = builder.addMethod(method);
-                }
-                return builder.build();
-            },
-            dest
+    public ManifestFaked(String packageName, List<Annotation> annotations) {
+        this.packageName = packageName;
+        this.annotations = annotations;
+    }
+
+    /**
+     * Ctor.
+     * 
+     * @param packageName Name of faked package
+     * @param annotations Annotations
+     */
+    public ManifestFaked(String packageName, Annotation... annotations) {
+        this(
+            packageName,
+            List.of(annotations)
         );
+    }
+    
+    @Override
+    public final <A extends Annotation> Iterable<Declaration<A>> declarations(Class<A> type) {
+        return annotations
+                .filter(anno -> type.isAssignableFrom(anno.getClass()))
+                .map(anno -> (A) anno)
+                .map(anno -> new DeclExplicit<>(anno, packageName));
     }
 }

@@ -25,6 +25,7 @@ package com.pragmaticobjects.oo.data.structure;
 
 import com.pragmaticobjects.oo.data.AbstractProcessor;
 import com.pragmaticobjects.oo.data.anno.Structure;
+import com.pragmaticobjects.oo.data.model.source.javapoet.DestFromProcessingEnvironment;
 import com.pragmaticobjects.oo.data.structure.model.source.SrcFileStructure;
 import io.vavr.collection.List;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -48,7 +49,13 @@ public class StructureProcessor extends AbstractProcessor<Structure> {
     public StructureProcessor() {
         super(
             Structure.class,
-            (decl, mani, procEnv) -> List.of(new SrcFileStructure(mani, decl, procEnv))
+            (decl, mani, procEnv) -> List.of(
+                new SrcFileStructure(
+                    mani,
+                    decl,
+                    new DestFromProcessingEnvironment(procEnv)
+                )
+            )
         );
     }
 }
