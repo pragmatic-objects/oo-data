@@ -25,10 +25,10 @@ package com.pragmaticobjects.oo.data.value;
 
 import com.pragmaticobjects.oo.data.AbstractProcessor;
 import com.pragmaticobjects.oo.data.anno.Structure;
-import com.pragmaticobjects.oo.data.value.model.typeinfo.StructureTypeInformation;
-import com.pragmaticobjects.oo.data.model.source.SrcFileForTypeInformation;
 import com.pragmaticobjects.oo.data.model.source.javapoet.DestFromProcessingEnvironment;
+import com.pragmaticobjects.oo.data.value.model.source.SrcFileStructureValue;
 import io.vavr.collection.List;
+
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
@@ -51,10 +51,10 @@ public class StructureValueProcessor extends AbstractProcessor<Structure> {
         super(
             Structure.class,
             (anno, mani, procEnv) -> List.of(
-                new SrcFileForTypeInformation(
-                    new StructureTypeInformation(anno),
+                new SrcFileStructureValue(
                     anno,
-                    new DestFromProcessingEnvironment(procEnv)
+                    new DestFromProcessingEnvironment(procEnv),
+                    mani
                 )
             )
         );

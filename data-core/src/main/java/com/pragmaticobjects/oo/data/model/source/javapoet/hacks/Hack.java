@@ -21,9 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.pragmaticobjects.oo.data.hacks;
+package com.pragmaticobjects.oo.data.model.source.javapoet.hacks;
 
-import com.sun.tools.javac.code.Type;
+import com.squareup.javapoet.TypeName;
 import java.util.function.Supplier;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
@@ -47,18 +47,14 @@ public class Hack {
      * @param supplier Method reference to the annotation field of type {@link Class}
      * @return {@link TypeMirror} instance.
      */
-    public static TypeMirror extractType(Supplier<Class> supplier) {
+    public static TypeName extractType(Supplier<Class> supplier) {
         try {
-            supplier.get();
-            throw new RuntimeException(
-                "If you see this exception, something in this cursed "
-                + "world changed to better side and it is now "
-                + "possible to extract "
-                + "a class value from annotation. "
-                + "Tell us to rewrite this ugly hack by reporting an issue."
-            );
+            Class type = supplier.get();
+            return TypeName.get(type);
         } catch(MirroredTypeException ex) {
-            return ex.getTypeMirror();
+            return TypeName.get(
+                ex.getTypeMirror()
+            );
         }
     }
 }
