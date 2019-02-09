@@ -43,11 +43,6 @@ public class SrcFileStructureValue extends SrcFileJavaPoet {
                         );
                 final List<FieldSpec> fields = List.of(declaration.annotation().has())
                     .map(superinterface -> {
-                        boolean multiple = false;
-                        if(superinterface.startsWith("*")) {
-                            multiple = true;
-                            superinterface = superinterface.replace("*", "");
-                        }
                         final Declaration<Scalar> scalar = manifestIndex.uniqueByKey(superinterface);
                         final String fieldName = WordUtils.uncapitalize(superinterface);
                         final TypeName fieldType = Hack.extractType(scalar.annotation()::type);
