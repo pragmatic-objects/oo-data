@@ -82,7 +82,7 @@ public class SrcFileStructureValueTest extends TestsSuite {
                             "",
                             "import java.lang.String;",
                             "",
-                            "public class UserValue implements UserId, UserName {",
+                            "public class UserValue implements User {",
                             "  private final int userId;",
                             "",
                             "  private final String userName;",

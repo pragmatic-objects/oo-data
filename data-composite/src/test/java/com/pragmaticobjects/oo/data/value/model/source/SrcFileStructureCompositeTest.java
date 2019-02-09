@@ -25,7 +25,7 @@ package com.pragmaticobjects.oo.data.value.model.source;
 
 import com.pragmaticobjects.oo.data.anno.Scalar;
 import com.pragmaticobjects.oo.data.anno.Structure;
-import com.pragmaticobjects.oo.data.composite.SrcFileStructureComposite;
+import com.pragmaticobjects.oo.data.composite.model.source.SrcFileStructureComposite;
 import com.pragmaticobjects.oo.data.model.declaration.DeclExplicit;
 import com.pragmaticobjects.oo.data.model.declaration.Declaration;
 import com.pragmaticobjects.oo.data.model.manifest.Manifest;
@@ -83,7 +83,7 @@ public class SrcFileStructureCompositeTest extends TestsSuite {
                             "",
                             "import java.lang.String;",
                             "",
-                            "public class UserComposite implements UserId, UserName {",
+                            "public class UserComposite implements User {",
                             "  private final UserId userId;",
                             "",
                             "  private final UserName userName;",

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.pragmaticobjects.oo.data.composite;
+package com.pragmaticobjects.oo.data.composite.model.source;
 
 import com.pragmaticobjects.oo.data.anno.Scalar;
 import com.pragmaticobjects.oo.data.anno.Structure;
@@ -57,12 +57,7 @@ public class SrcFileStructureComposite extends SrcFileJavaPoet {
             () -> {
                 final ManifestIndexSimple<String, Scalar> manifestIndex = new ManifestIndexSimple<>(manifest, Scalar.class, Scalar::value);
                 final String name = declaration.annotation().value() + "Composite";
-                final List<ClassName> superifaces = List.of(declaration.annotation().has())
-                        .map(has -> 
-                            ClassName.get(
-                                declaration.packageName(), has
-                            )
-                        );
+                final TypeName type = ClassName.bestGuess(declaration.annotation().value());
                 final List<FieldSpec> fields = List.of(declaration.annotation().has())
                     .map(superinterface -> {
                         final Declaration<Scalar> scalar = manifestIndex.uniqueByKey(superinterface);
@@ -95,7 +90,7 @@ public class SrcFileStructureComposite extends SrcFileJavaPoet {
                 
                 return TypeSpec.classBuilder(name)
                         .addModifiers(Modifier.PUBLIC)
-                        .addSuperinterfaces(superifaces)
+                        .addSuperinterface(type)
                         .addFields(fields)
                         .addMethod(constructor)
                         .addMethods(accessors)

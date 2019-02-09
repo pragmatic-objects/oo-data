@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.pragmaticobjects.oo.data.composite.model.source;
+package com.pragmaticobjects.oo.data.composite;
 
 import com.pragmaticobjects.oo.data.AbstractProcessor;
 import com.pragmaticobjects.oo.data.anno.Structure;
-import com.pragmaticobjects.oo.data.composite.SrcFileStructureComposite;
+import com.pragmaticobjects.oo.data.composite.model.source.SrcFileStructureComposite;
 import com.pragmaticobjects.oo.data.model.source.javapoet.DestFromProcessingEnvironment;
 import io.vavr.collection.List;
 
