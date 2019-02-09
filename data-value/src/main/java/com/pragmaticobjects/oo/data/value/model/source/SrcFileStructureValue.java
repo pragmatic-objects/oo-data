@@ -35,12 +35,6 @@ public class SrcFileStructureValue extends SrcFileJavaPoet {
                 final ManifestIndexSimple<String, Scalar> manifestIndex = new ManifestIndexSimple<>(manifest, Scalar.class, Scalar::value);
                 final String name = declaration.annotation().value() + "Value";
                 final TypeName type = ClassName.bestGuess(declaration.annotation().value());
-                final List<ClassName> superifaces = List.of(declaration.annotation().has())
-                        .map(has -> 
-                            ClassName.get(
-                                declaration.packageName(), has
-                            )
-                        );
                 final List<FieldSpec> fields = List.of(declaration.annotation().has())
                     .map(superinterface -> {
                         final Declaration<Scalar> scalar = manifestIndex.uniqueByKey(superinterface);
