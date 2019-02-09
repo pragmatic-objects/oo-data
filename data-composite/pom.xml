@@ -6,9 +6,8 @@
         <artifactId>oo-data</artifactId>
         <version>0.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>data-struct</artifactId>
+    <artifactId>data-composite</artifactId>
     <packaging>jar</packaging>
-    
     
     <dependencies>
         <dependency>
