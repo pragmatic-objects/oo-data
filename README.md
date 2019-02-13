@@ -48,7 +48,7 @@ UserAvatar avatar = userInfo; // correct
 UserLocation loc = userInfo; // incorrect! Location is not visual information.
 ```
 
-2. You can substitute greater structures instead of smaller ones:
+2. You can substitute larger structures in places where smaller ones are required:
 
 ```
 UserFullInfo userFullInfo = ...;
@@ -67,7 +67,7 @@ UserFullInfo info = new UserFullInfoComposite(
 // Or even from other structures
 UserVisualInfo visualInfo = new UserVisualInfoValue("Sergey Kapralov", avatarUrl);
 UserContactInfo contactInfo = new UserContactInfo("Sergey Kapralov", "Nizhniy Novgorod, Russia");
-UserFullInfo fullInfo = new UserFullInfo(
+UserFullInfo fullInfo = new UserFullInfoComposite(
     new UserNameValue("Kapralov Sergey"),
     visualInfo, // avatar will be taken from visualInfo
     contactInfo // location - from contactInfo

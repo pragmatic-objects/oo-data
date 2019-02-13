@@ -12,7 +12,7 @@
     </properties>
     
     <name>OO-data</name>
-    <description>Data-like objects with structural subtyping</description>
+    <description>Tool for generating data-like interfaces with basic structural subtyping support</description>
     <url>https://github.com/pragmatic-objects/oo-data</url>
     <scm>
         <url>https://github.com/pragmatic-objects/oo-data.git</url>
