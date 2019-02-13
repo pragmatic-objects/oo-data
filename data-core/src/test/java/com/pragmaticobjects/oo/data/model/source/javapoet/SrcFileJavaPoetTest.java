@@ -24,7 +24,6 @@
 package com.pragmaticobjects.oo.data.model.source.javapoet;
 
 import com.pragmaticobjects.oo.data.model.declaration.DeclExplicit;
-import com.pragmaticobjects.oo.data.model.declaration.Declaration;
 import com.pragmaticobjects.oo.data.model.source.AssertAssumingTemporaryDirectory;
 import com.pragmaticobjects.oo.data.model.source.AssertSourceFileGenerated;
 import com.pragmaticobjects.oo.tests.TestCase;
@@ -38,11 +37,6 @@ import java.lang.annotation.Annotation;
  * @author skapral
  */
 public class SrcFileJavaPoetTest extends TestsSuite {
-    private static final Declaration<?> COM_PRAGMATICOBJECTS_TEST = new DeclExplicit(
-        () -> Annotation.class,
-        "com.pragmaticobjects.test"
-    );
-    
     /**
      * Ctor.
      */
@@ -53,7 +47,10 @@ public class SrcFileJavaPoetTest extends TestsSuite {
                 new AssertAssumingTemporaryDirectory(
                     tmpDir -> new AssertSourceFileGenerated(
                         new SrcFileJavaPoet(
-                            COM_PRAGMATICOBJECTS_TEST,
+                            new DeclExplicit(
+                                () -> Annotation.class,
+                                "com.pragmaticobjects.test"
+                            ),
                             () -> TypeSpec.interfaceBuilder("Test").build(),
                             new DestToPath(tmpDir)
                         ), 

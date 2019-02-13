@@ -23,6 +23,7 @@
  */
 package com.pragmaticobjects.oo.data.model.source.javapoet.hacks;
 
+import com.pragmaticobjects.oo.atom.anno.NotAtom;
 import com.squareup.javapoet.TypeName;
 import java.util.function.Supplier;
 import javax.lang.model.type.MirroredTypeException;
@@ -33,6 +34,7 @@ import javax.lang.model.type.TypeMirror;
  * 
  * @author skapral
  */
+@NotAtom
 public class Hack {
     private Hack() {}
     

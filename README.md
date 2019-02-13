@@ -45,7 +45,7 @@ package your.package.name;
 UserVisualInfo userInfo = ...;
 UserName name = userInfo; // correct
 UserAvatar avatar = userInfo; // correct
-UserLocation loc = userInfo; // correct
+UserLocation loc = userInfo; // incorrect! Location is not visual information.
 ```
 
 2. You can substitute greater structures instead of smaller ones:
