@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.pragmaticobjects.oo.data</groupId>
         <artifactId>oo-data</artifactId>
-        <version>0.0.0-SNAPSHOT</version>
+        <version>0.0.0</version>
     </parent>
     <artifactId>data-composite</artifactId>
     <packaging>jar</packaging>
