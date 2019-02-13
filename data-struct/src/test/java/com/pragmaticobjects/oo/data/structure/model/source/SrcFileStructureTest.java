@@ -43,7 +43,17 @@ public class SrcFileStructureTest extends TestsSuite {
     private static final Manifest TEST_MANIFEST = new ManifestFaked(
         "com.test",
         new Scalar.Value("UserId", int.class),
-        new Scalar.Value("UserName", String.class)
+        new Scalar.Value("UserName", String.class),
+        new Scalar.Value("UserLocation", String.class)
+    );
+    private static final Manifest TEST_MANIFEST2 = new ManifestFaked(
+        "com.test",
+        new Scalar.Value("UserId", int.class),
+        new Scalar.Value("UserName", String.class),
+        new Scalar.Value("UserLocation", String.class),
+        new Scalar.Value("ZipIndex", String.class),
+        new Structure.Value("UserInfo", "UserId", "UserName"),
+        new Structure.Value("UserAddress", "UserLocation", "ZipIndex")
     );
     
     /**
@@ -73,6 +83,35 @@ public class SrcFileStructureTest extends TestsSuite {
                             "package com.test;",
                             "",
                             "public interface User extends UserId, UserName {",
+                            "}",
+                            ""
+                        )
+                    )
+                )
+            ),
+            new TestCase(
+                "structure must subtype other structure(s) if their set of scalars is subset of original structure",
+                new AssertAssumingTemporaryDirectory(tmpPath -> 
+                    new AssertSourceFileGenerated(
+                        new SrcFileStructure(
+                            TEST_MANIFEST2,
+                            new DeclExplicit<>(
+                                new Structure.Value(
+                                    "User",
+                                    "UserId",
+                                    "UserName",
+                                    "UserLocation"
+                                ),
+                                "com.test"
+                            ),
+                            new DestToPath(tmpPath)
+                        ),
+                        tmpPath.resolve("com/test/User.java"),
+                        String.join(
+                            System.lineSeparator(),
+                            "package com.test;",
+                            "",
+                            "public interface User extends UserId, UserName, UserLocation, UserInfo {",
                             "}",
                             ""
                         )
