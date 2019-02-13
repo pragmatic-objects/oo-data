@@ -1,8 +1,8 @@
 # OO-Data
 
-[![Build Status (Travis)](https://img.shields.io/travis/pragmatic-objects/oo-atom/master.svg)](https://travis-ci.org/pragmatic-objects/oo-data)
-[![Build status (AppVeyor)](https://ci.appveyor.com/api/projects/status/sumvi0c7teo9oq94?svg=true)](https://ci.appveyor.com/project/skapral/oo-data)
-[![Codecov](https://codecov.io/gh/pragmatic-objects/oo-atom/branch/master/graph/badge.svg)](https://codecov.io/gh/pragmatic-objects/oo-data)
+[![Build Status (Travis)](https://img.shields.io/travis/pragmatic-objects/oo-data/master.svg)](https://travis-ci.org/pragmatic-objects/oo-data)
+[![Build status (AppVeyor)](https://ci.appveyor.com/api/projects/status/6vv95ed3t1km960l?svg=true)](https://ci.appveyor.com/project/skapral/oo-data)
+[![Codecov](https://codecov.io/gh/pragmatic-objects/oo-data/branch/master/graph/badge.svg)](https://codecov.io/gh/pragmatic-objects/oo-data)
 
 Tool for generating data-like interfaces with basic structural subtyping support.
 
