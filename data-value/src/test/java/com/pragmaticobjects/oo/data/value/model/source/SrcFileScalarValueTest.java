@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.pragmaticobjects.oo.data.value.model.typeinfo;
+package com.pragmaticobjects.oo.data.value.model.source;
 
 import com.pragmaticobjects.oo.data.anno.Scalar;
 import com.pragmaticobjects.oo.data.anno.Structure;
@@ -31,18 +31,16 @@ import com.pragmaticobjects.oo.data.model.manifest.Manifest;
 import com.pragmaticobjects.oo.data.model.manifest.ManifestFaked;
 import com.pragmaticobjects.oo.data.model.source.AssertAssumingTemporaryDirectory;
 import com.pragmaticobjects.oo.data.model.source.AssertSourceFileGenerated;
-import com.pragmaticobjects.oo.data.model.source.SrcFileForTypeInformation;
 import com.pragmaticobjects.oo.data.model.source.javapoet.DestToPath;
-import com.pragmaticobjects.oo.tests.AssertIgnore;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 
 /**
- * Tests suite for {@link ScalarTypeInformation}.
+ * Tests suite for {@link SrcFileScalarValueTest}.
  * 
  * @author skapral
  */
-public class ScalarTypeInformationTest extends TestsSuite {
+public class SrcFileScalarValueTest extends TestsSuite {
     private static final Manifest TEST_MANIFEST = new ManifestFaked(
         "com.test",
         new Scalar.Value("UserId", int.class),
@@ -62,27 +60,32 @@ public class ScalarTypeInformationTest extends TestsSuite {
     /**
      * Ctor.
      */
-    public ScalarTypeInformationTest() {
+    public SrcFileScalarValueTest() {
         super(
             new TestCase(
-                "generation of scalar value",
-                new AssertIgnore(// Test is incomplete.
-                        // Extraction of class values from Scalar.Value and Structure.Value 
-                        // collides with assumptions made in Hack.
-                    new AssertAssumingTemporaryDirectory(tmpDir -> 
-                        new AssertSourceFileGenerated(
-                            new SrcFileForTypeInformation(
-                                new ScalarTypeInformation(
-                                    SCALAR_UNDER_TEST
-                                ),
-                                SCALAR_UNDER_TEST,
-                                new DestToPath(tmpDir)
-                            ),
-                            tmpDir.resolve("com/test/UserIdValue.java"),
-                            String.join(
-                                System.lineSeparator(),
-                                ""
-                            )
+            "generation of scalar value",
+                new AssertAssumingTemporaryDirectory(tmpDir -> 
+                    new AssertSourceFileGenerated(
+                        new SrcFileScalarValue(
+                            SCALAR_UNDER_TEST,
+                            new DestToPath(tmpDir)
+                        ),
+                        tmpDir.resolve("com/test/UserIdValue.java"),
+                        String.join(
+                            System.lineSeparator(),
+                            "package com.test;",
+                            "",
+                            "public class UserIdValue implements UserId {",
+                            "  private final int userId;",
+                            "",
+                            "  public UserIdValue(int userId) {",
+                            "    this.userId = userId;",
+                            "  }",
+                            "",
+                            "  public final int userId() {",
+                            "    return this.userId;}",
+                            "}",
+                            ""
                         )
                     )
                 )

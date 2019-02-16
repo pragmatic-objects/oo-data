@@ -23,6 +23,7 @@
  */
 package com.pragmaticobjects.oo.data;
 
+import com.pragmaticobjects.oo.atom.anno.NotAtom;
 import com.pragmaticobjects.oo.data.model.declaration.Declaration;
 import com.pragmaticobjects.oo.data.model.manifest.Manifest;
 import com.pragmaticobjects.oo.data.model.manifest.ManifestCombined;
@@ -41,6 +42,7 @@ import javax.lang.model.element.TypeElement;
  * @author skapral
  * @param <A> Annotation
  */
+@NotAtom
 public abstract class AbstractProcessor<A extends Annotation> extends javax.annotation.processing.AbstractProcessor {
     private final Class<A> annotationType;
     private final GenerationTaskInference<A> task;

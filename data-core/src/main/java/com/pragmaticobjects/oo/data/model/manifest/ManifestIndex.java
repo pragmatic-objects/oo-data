@@ -21,32 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.pragmaticobjects.oo.data.model.source.javapoet;
+package com.pragmaticobjects.oo.data.model.manifest;
 
-import com.squareup.javapoet.FieldSpec;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeName;
+import com.pragmaticobjects.oo.data.model.declaration.Declaration;
+import io.vavr.collection.List;
+import java.lang.annotation.Annotation;
 
 /**
- * Information for generating source file for a type.
+ * Manifest with its declarations indexed by some key
  * 
+ * @param <K> Key type
+ * @param <A> annotation's type
  * @author skapral
  */
-public interface TypeInformation {
+public interface ManifestIndex<K, A extends Annotation> {
     /**
-     * @return Type name
+     * @param key Key
+     * @return All declarations by key
      */
-    String name();
+    List<Declaration<A>> allByKey(K key);
+    
     /**
-     * @return Implemented interfaces
+     * @param key Key
+     * @return Single declaration or {@link Exception} if not found
      */
-    Iterable<TypeName> superinterfaces();
-    /**
-     * @return Type fields
-     */
-    Iterable<FieldSpec> fields();
-    /**
-     * @return Type methods
-     */
-    Iterable<MethodSpec> methods();
+    Declaration<A> uniqueByKey(K key);
 }
