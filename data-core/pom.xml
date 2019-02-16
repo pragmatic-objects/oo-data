@@ -41,7 +41,7 @@
         <dependency> <!-- WA: https://github.com/pragmatic-objects/oo-atom/issues/240 -->
             <groupId>com.pragmaticobjects.oo.atom</groupId>
             <artifactId>atom-basis</artifactId>
-            <version>0.0.15</version>
+            <version>0.0.16</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
