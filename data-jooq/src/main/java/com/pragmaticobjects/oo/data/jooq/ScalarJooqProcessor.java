@@ -42,11 +42,11 @@ import javax.lang.model.SourceVersion;
     "com.pragmaticobjects.oo.data.anno.Scalar"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-public class JooqProcessor extends AbstractProcessor<Scalar> {
+public class ScalarJooqProcessor extends AbstractProcessor<Scalar> {
     /**
      * Ctor.
      */
-    public JooqProcessor() {
+    public ScalarJooqProcessor() {
         super(
             Scalar.class,
             (decl, mani, procEnv) -> List.of(new SrcFileScalarFromJooqRecord(decl, new DestFromProcessingEnvironment(procEnv)))
