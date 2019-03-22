@@ -24,12 +24,14 @@
 package com.pragmaticobjects.oo.data;
 
 import com.pragmaticobjects.oo.atom.anno.NotAtom;
+import com.pragmaticobjects.oo.data.anno.Import;
 import com.pragmaticobjects.oo.data.model.declaration.Declaration;
 import com.pragmaticobjects.oo.data.model.manifest.Manifest;
 import com.pragmaticobjects.oo.data.model.manifest.ManifestCombined;
 import com.pragmaticobjects.oo.data.model.manifest.ManifestFromPackageElement;
 import com.pragmaticobjects.oo.data.model.source.SourceFile;
 import io.vavr.collection.HashSet;
+import io.vavr.collection.List;
 import java.lang.annotation.Annotation;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -60,12 +62,17 @@ public abstract class AbstractProcessor<A extends Annotation> extends javax.anno
 
     @Override
     public boolean process(java.util.Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        processingEnv.getElementUtils();
+        System.out.println("aaa");
         for (TypeElement annotation : annotations) {
             Manifest manifest = HashSet.of(roundEnv)
                     .flatMap(env -> env.getElementsAnnotatedWith(annotation))
                     .map(e -> (PackageElement) e)
-                    .map(e -> new ManifestFromPackageElement(e))
+                    .flatMap(
+                        pkg -> List.of(pkg.getAnnotationsByType(Import.class))
+                                .map(i -> processingEnv.getElementUtils().getPackageElement(i.value()))
+                                .map(ManifestFromPackageElement::new)
+                                .append(new ManifestFromPackageElement(pkg))
+                    )
                     .transform(ms -> new ManifestCombined(ms));
            
             for(Declaration<A> declaration : manifest.declarations(annotationType)) {
