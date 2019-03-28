@@ -29,7 +29,7 @@ import io.vavr.collection.List;
 import javax.annotation.processing.ProcessingEnvironment;
 
 /**
- * Destinatiion, that checks incoming files for duplicate in other packages.
+ * Destination, that checks incoming files for duplicate in other packages.
  * 
  * @author skapral
  */
@@ -54,11 +54,8 @@ public class DestDeduplicated implements Destination {
 
     @Override
     public final void persist(JavaFile file) {
-        String name = file.typeSpec.name;
-        boolean empty = imports.map(i -> i.value() + "." + name)
-                .filter(cn -> !procEnv.getElementUtils().getAllTypeElements(name).isEmpty())
-                .isEmpty();
-        if(empty) {
+        String name = file.packageName + "." + file.typeSpec.name;
+        if(procEnv.getElementUtils().getTypeElement(name) == null) {
             delegate.persist(file);
         }
     }

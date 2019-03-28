@@ -67,24 +67,23 @@ public class SrcFileStructureFromJooqRecord extends SrcFileJavaPoet {
                 final List<FieldSpec> fields = List.of(
                     FieldSpec.builder(Record.class, "record", Modifier.PRIVATE, Modifier.FINAL).build()
                 );
-                final CodeBlock superCall = CodeBlock.of(
-                    "super(\r\n$L\r\n);\r\n",
-                    (CodeBlock) List.of(declaration.annotation().has())
+                
+                CodeBlock.Builder superCall = CodeBlock.builder().add("super(");
+                superCall.add(List.of(declaration.annotation().has())
                         .map(superinterface -> {
                             final Declaration<Scalar> scalar = manifestIndex.uniqueByKey(superinterface);
-                            final TypeName type = ClassName.get(packageName, scalar.annotation().value() + "FromJooqRecord");
+                            final TypeName type = ClassName.get(scalar.packageName(), scalar.annotation().value() + "FromJooqRecord");
                             return type;
                         })
                         .zipWithIndex()
                         .map(tuple -> CodeBlock.of("new $T(record, record.field($L))", tuple._1, tuple._2))
-                        .transform(list -> CodeBlock.join(list, ",\r\n"))
-                );
-                        
+                        .transform(cbl -> CodeBlock.join(cbl, ",")));
+                superCall.add(");");
                 
                 final MethodSpec constructor = MethodSpec.constructorBuilder()
                         .addModifiers(Modifier.PUBLIC)
                         .addParameter(Record.class, "record")
-                        .addCode(superCall)
+                        .addCode(superCall.build())
                         .build();
                 
                 return TypeSpec.classBuilder(className)

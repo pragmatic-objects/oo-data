@@ -84,11 +84,7 @@ public class SrcFileStructureFromJooqRecordTest extends TestsSuite {
                             "",
                             "public class UserFromJooqRecord extends UserComposite {",
                             "  public UserFromJooqRecord(Record record) {",
-                            "    super(",
-                            "    new UserIdFromJooqRecord(record, record.field(0)),",
-                            "    new UserNameFromJooqRecord(record, record.field(1))",
-                            "    );",
-                            "  }",
+                            "    super(new UserIdFromJooqRecord(record, record.field(0)),new UserNameFromJooqRecord(record, record.field(1)));}",
                             "}",
                             ""
                         )
