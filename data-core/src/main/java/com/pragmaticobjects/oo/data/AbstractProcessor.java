@@ -32,11 +32,13 @@ import com.pragmaticobjects.oo.data.model.manifest.Manifest;
 import com.pragmaticobjects.oo.data.model.manifest.ManifestCombined;
 import com.pragmaticobjects.oo.data.model.manifest.ManifestFromPackageElement;
 import com.pragmaticobjects.oo.data.model.source.SourceFile;
+import com.pragmaticobjects.oo.data.model.source.javapoet.DestDeduplicated;
 import com.pragmaticobjects.oo.data.model.source.javapoet.DestFromProcessingEnvironment;
 import com.pragmaticobjects.oo.data.model.source.javapoet.Destination;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.List;
 import java.lang.annotation.Annotation;
+
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
@@ -64,33 +66,34 @@ public abstract class AbstractProcessor extends javax.annotation.processing.Abst
 
     @Override
     public boolean process(java.util.Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        System.out.println(this.getClass().getName());
         for (TypeElement annotation : annotations) {
-            System.out.println("Processing " + annotation);
-            Manifest manifest = HashSet.of(roundEnv)
+            for(PackageElement pkg : HashSet.of(roundEnv)
                     .flatMap(env -> env.getElementsAnnotatedWith(annotation))
-                    .map(e -> (PackageElement) e)
-                    .flatMap(
-                        pkg -> List.of(pkg.getAnnotationsByType(Import.class))
-                                .map(i -> processingEnv.getElementUtils().getPackageElement(i.value()))
-                                .map(ManifestFromPackageElement::new)
-                                .append(new ManifestFromPackageElement(pkg))
-                    )
-                    .transform(ms -> new ManifestCombined(ms));
-            final Destination dest = new DestFromProcessingEnvironment(processingEnv);
-            for(Declaration<Scalar> declaration : List.ofAll(manifest.declarations(Scalar.class))) {
-                System.out.println("scalar " + declaration.annotation());
-                scalarTasks.sourceFiles(declaration, manifest, dest).forEach(s -> {
-                    System.out.println(s);
-                    s.generate();
-                });
-            }
-            for(Declaration<Structure> declaration : List.ofAll(manifest.declarations(Structure.class))) {
-                System.out.println("structure " + declaration.annotation());
-                structureTasks.sourceFiles(declaration, manifest, dest).forEach(s -> {
-                    System.out.println(s);
-                    s.generate();
-                });
+                    .map(e -> (PackageElement) e)) {
+                final List<Import> imports = List.of(pkg.getAnnotationsByType(Import.class));
+                final List<PackageElement> importPackages = imports
+                        .map(i -> processingEnv.getElementUtils().getPackageElement(i.value()));
+                final Manifest localManifest = new ManifestFromPackageElement(pkg);
+                final Manifest contextManifest = new ManifestCombined(
+                    importPackages
+                        .<Manifest>map(ManifestFromPackageElement::new)
+                        .append(localManifest)
+                );
+                Destination dest = new DestDeduplicated(imports, processingEnv, new DestFromProcessingEnvironment(processingEnv));
+                for(Declaration<Scalar> declaration : List.ofAll(contextManifest.declarations(Scalar.class))) {
+                    scalarTasks.sourceFiles(
+                        declaration,
+                        contextManifest,
+                        dest
+                    ).forEach(SourceFile::generate);
+                }
+                for(Declaration<Structure> declaration : List.ofAll(contextManifest.declarations(Structure.class))) {
+                    structureTasks.sourceFiles(
+                        declaration,
+                        contextManifest,
+                        dest
+                    ).forEach(SourceFile::generate);
+                }
             }
         }
         return false;
@@ -108,5 +111,5 @@ public abstract class AbstractProcessor extends javax.annotation.processing.Abst
          * @return The list of source files
          */
         Iterable<SourceFile> sourceFiles(Declaration<A> declaration, Manifest manifest, Destination dest);
-    }
+    }    
 }
