@@ -24,12 +24,10 @@
 package com.pragmaticobjects.oo.data.composite;
 
 import com.pragmaticobjects.oo.data.AbstractProcessor;
-import com.pragmaticobjects.oo.data.anno.Structure;
 import com.pragmaticobjects.oo.data.composite.model.source.SrcFileStructureComposite;
-import com.pragmaticobjects.oo.data.model.source.javapoet.DestFromProcessingEnvironment;
 import io.vavr.collection.List;
-
 import javax.annotation.processing.SupportedAnnotationTypes;
+
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 
@@ -39,21 +37,23 @@ import javax.lang.model.SourceVersion;
  * @author skapral
  */
 @SupportedAnnotationTypes({
-    "com.pragmaticobjects.oo.data.anno.Structure",
+    "com.pragmaticobjects.oo.data.anno.Scalar.List",
+    "com.pragmaticobjects.oo.data.anno.Scalar",
     "com.pragmaticobjects.oo.data.anno.Structure.List",
+    "com.pragmaticobjects.oo.data.anno.Structure"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-public class StructureCompositeProcessor extends AbstractProcessor<Structure> {
+public class StructureCompositeProcessor extends AbstractProcessor {
     /**
      * Ctor.
      */
     public StructureCompositeProcessor() {
         super(
-            Structure.class,
-            (anno, mani, procEnv) -> List.of(
+            (anno, mani, dest) -> List.empty(),
+            (anno, mani, dest) -> List.of(
                 new SrcFileStructureComposite(
                     anno,
-                    new DestFromProcessingEnvironment(procEnv),
+                    dest,
                     mani
                 )
             )

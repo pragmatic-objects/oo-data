@@ -25,15 +25,18 @@ package com.pragmaticobjects.oo.data;
 
 import com.pragmaticobjects.oo.atom.anno.NotAtom;
 import com.pragmaticobjects.oo.data.anno.Import;
+import com.pragmaticobjects.oo.data.anno.Scalar;
+import com.pragmaticobjects.oo.data.anno.Structure;
 import com.pragmaticobjects.oo.data.model.declaration.Declaration;
 import com.pragmaticobjects.oo.data.model.manifest.Manifest;
 import com.pragmaticobjects.oo.data.model.manifest.ManifestCombined;
 import com.pragmaticobjects.oo.data.model.manifest.ManifestFromPackageElement;
 import com.pragmaticobjects.oo.data.model.source.SourceFile;
+import com.pragmaticobjects.oo.data.model.source.javapoet.DestFromProcessingEnvironment;
+import com.pragmaticobjects.oo.data.model.source.javapoet.Destination;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.List;
 import java.lang.annotation.Annotation;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
@@ -42,28 +45,28 @@ import javax.lang.model.element.TypeElement;
  * Base annotation processor for all data generators.
  * 
  * @author skapral
- * @param <A> Annotation
  */
 @NotAtom
-public abstract class AbstractProcessor<A extends Annotation> extends javax.annotation.processing.AbstractProcessor {
-    private final Class<A> annotationType;
-    private final GenerationTaskInference<A> task;
+public abstract class AbstractProcessor extends javax.annotation.processing.AbstractProcessor {
+    private final GenerationTaskInference<Scalar> scalarTasks;
+    private final GenerationTaskInference<Structure> structureTasks;
 
     /**
      * Ctor.
      * 
-     * @param annotationType Type of annotation
-     * @param task Generation task
+     * @param scalarTasks Scalar tasks
+     * @param structureTasks Structure tasks
      */
-    public AbstractProcessor(Class<A> annotationType, GenerationTaskInference<A> task) {
-        this.annotationType = annotationType;
-        this.task = task;
+    public AbstractProcessor(GenerationTaskInference<Scalar> scalarTasks, GenerationTaskInference<Structure> structureTasks) {
+        this.scalarTasks = scalarTasks;
+        this.structureTasks = structureTasks;
     }
 
     @Override
     public boolean process(java.util.Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        System.out.println("aaa");
+        System.out.println(this.getClass().getName());
         for (TypeElement annotation : annotations) {
+            System.out.println("Processing " + annotation);
             Manifest manifest = HashSet.of(roundEnv)
                     .flatMap(env -> env.getElementsAnnotatedWith(annotation))
                     .map(e -> (PackageElement) e)
@@ -74,9 +77,20 @@ public abstract class AbstractProcessor<A extends Annotation> extends javax.anno
                                 .append(new ManifestFromPackageElement(pkg))
                     )
                     .transform(ms -> new ManifestCombined(ms));
-           
-            for(Declaration<A> declaration : manifest.declarations(annotationType)) {
-                task.sourceFiles(declaration, manifest, processingEnv).forEach(SourceFile::generate);
+            final Destination dest = new DestFromProcessingEnvironment(processingEnv);
+            for(Declaration<Scalar> declaration : List.ofAll(manifest.declarations(Scalar.class))) {
+                System.out.println("scalar " + declaration.annotation());
+                scalarTasks.sourceFiles(declaration, manifest, dest).forEach(s -> {
+                    System.out.println(s);
+                    s.generate();
+                });
+            }
+            for(Declaration<Structure> declaration : List.ofAll(manifest.declarations(Structure.class))) {
+                System.out.println("structure " + declaration.annotation());
+                structureTasks.sourceFiles(declaration, manifest, dest).forEach(s -> {
+                    System.out.println(s);
+                    s.generate();
+                });
             }
         }
         return false;
@@ -84,16 +98,15 @@ public abstract class AbstractProcessor<A extends Annotation> extends javax.anno
     
     /**
      * Generation task, aka a set of {@link SourceFile} to generate
-     * 
-     * @param <A> Annotation
+     * @param <A> type of processed annotation
      */
     public @FunctionalInterface interface GenerationTaskInference<A extends Annotation> {
         /**
          * @param declaration Declaration to process
          * @param manifest Manifest with all available declarations from the context
-         * @param procEnv Processing environment
+         * @param dest Destination
          * @return The list of source files
          */
-        Iterable<SourceFile> sourceFiles(Declaration<A> declaration, Manifest manifest, ProcessingEnvironment procEnv);
+        Iterable<SourceFile> sourceFiles(Declaration<A> declaration, Manifest manifest, Destination dest);
     }
 }

@@ -21,36 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.pragmaticobjects.oo.data.scalar;
+package com.pragmaticobjects.oo.data.model.source.javapoet;
 
-import com.pragmaticobjects.oo.data.AbstractProcessor;
-import com.pragmaticobjects.oo.data.anno.Scalar;
-import com.pragmaticobjects.oo.data.scalar.model.source.SrcFileScalar;
+import com.pragmaticobjects.oo.data.anno.Import;
+import com.squareup.javapoet.JavaFile;
 import io.vavr.collection.List;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.lang.model.SourceVersion;
+import javax.annotation.processing.ProcessingEnvironment;
 
 /**
- * Processor for {@link Scalar} annotation.
+ * Destinatiion, that checks incoming files for duplicate in other packages.
  * 
  * @author skapral
  */
-@SupportedAnnotationTypes({
-    "com.pragmaticobjects.oo.data.anno.Scalar.List",
-    "com.pragmaticobjects.oo.data.anno.Scalar",
-    "com.pragmaticobjects.oo.data.anno.Structure.List",
-    "com.pragmaticobjects.oo.data.anno.Structure"
-})
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
-public class ScalarProcessor extends AbstractProcessor {
+public class DestDeduplicated implements Destination {
+    private final List<Import> imports;
+    private final ProcessingEnvironment procEnv;
+    private final Destination delegate;
+
     /**
      * Ctor.
+     * @param imports Imports
+     * @param procEnv Processing environment
+     * @param delegate Delegating destination
      */
-    public ScalarProcessor() {
-        super(
-            (decl, mani, dest) -> List.of(new SrcFileScalar(decl, dest)),
-            (decl, mani, dest) -> List.empty()
-        );
+    public DestDeduplicated(List<Import> imports, ProcessingEnvironment procEnv, Destination delegate) {
+        this.imports = imports;
+        this.procEnv = procEnv;
+        this.delegate = delegate;
     }
+
+    
+
+    @Override
+    public final void persist(JavaFile file) {
+        String name = file.typeSpec.name;
+        boolean empty = imports.map(i -> i.value() + "." + name)
+                .filter(cn -> !procEnv.getElementUtils().getAllTypeElements(name).isEmpty())
+                .isEmpty();
+        if(empty) {
+            delegate.persist(file);
+        }
+    }
+    
 }
