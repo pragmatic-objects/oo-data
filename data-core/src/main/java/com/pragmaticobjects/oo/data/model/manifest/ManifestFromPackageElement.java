@@ -48,6 +48,7 @@ public class ManifestFromPackageElement implements Manifest {
     @Override
     public final <A extends Annotation> Iterable<Declaration<A>> declarations(Class<A> type) {
         return Stream.of(element.getAnnotationsByType(type))
+                .peek(a -> System.out.println("annotation from " + element + ": " + a))
                 .map(a -> new DeclExplicit<>(a, element.getQualifiedName().toString()));
     }
 }

@@ -26,10 +26,10 @@ package com.pragmaticobjects.oo.data.scalar.model.source;
 import com.pragmaticobjects.oo.data.anno.Scalar;
 import com.pragmaticobjects.oo.data.model.source.javapoet.hacks.Hack;
 import com.pragmaticobjects.oo.data.model.declaration.Declaration;
+import com.pragmaticobjects.oo.data.model.source.javapoet.Destination;
 import com.pragmaticobjects.oo.data.model.source.javapoet.SrcFileJavaPoet;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Modifier;
 import org.apache.commons.text.WordUtils;
 
@@ -43,9 +43,9 @@ public class SrcFileScalar extends SrcFileJavaPoet {
      * Ctor.
      * 
      * @param declaration Scalar declaration
-     * @param env Processing environment
+     * @param dest Processing environment
      */
-    public SrcFileScalar(Declaration<Scalar> declaration, ProcessingEnvironment env) {
+    public SrcFileScalar(Declaration<Scalar> declaration, Destination dest) {
         super(
             declaration,
             () -> {
@@ -63,7 +63,7 @@ public class SrcFileScalar extends SrcFileJavaPoet {
                         )
                         .build();
             },
-            env
+            dest
         );
     }
     

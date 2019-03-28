@@ -24,12 +24,10 @@
 package com.pragmaticobjects.oo.data.value;
 
 import com.pragmaticobjects.oo.data.AbstractProcessor;
-import com.pragmaticobjects.oo.data.anno.Scalar;
-import com.pragmaticobjects.oo.data.model.source.javapoet.DestFromProcessingEnvironment;
 import com.pragmaticobjects.oo.data.value.model.source.SrcFileScalarValue;
 import io.vavr.collection.List;
-
 import javax.annotation.processing.SupportedAnnotationTypes;
+
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 
@@ -39,21 +37,24 @@ import javax.lang.model.SourceVersion;
  * @author skapral
  */
 @SupportedAnnotationTypes({
-    "com.pragmaticobjects.oo.data.anno.Scalar",
     "com.pragmaticobjects.oo.data.anno.Scalar.List",
+    "com.pragmaticobjects.oo.data.anno.Scalar",
+    "com.pragmaticobjects.oo.data.anno.Structure.List",
+    "com.pragmaticobjects.oo.data.anno.Structure"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-public class ScalarValueProcessor extends AbstractProcessor<Scalar> {
+public class ScalarValueProcessor extends AbstractProcessor {
     /**
      * Ctor.
      */
     public ScalarValueProcessor() {
-        super(Scalar.class,
-            (anno, mani, procEnv) -> List.of(new SrcFileScalarValue(
+        super(
+            (anno, mani, dest) -> List.of(new SrcFileScalarValue(
                     anno,
-                    new DestFromProcessingEnvironment(procEnv)
+                    dest
                 )
-            )
+            ),
+            (anno, mani, dest) -> List.empty()
         );
     }
 }

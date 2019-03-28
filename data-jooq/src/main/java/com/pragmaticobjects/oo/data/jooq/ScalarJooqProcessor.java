@@ -26,7 +26,6 @@ package com.pragmaticobjects.oo.data.jooq;
 import com.pragmaticobjects.oo.data.AbstractProcessor;
 import com.pragmaticobjects.oo.data.anno.Scalar;
 import com.pragmaticobjects.oo.data.jooq.model.source.SrcFileScalarFromJooqRecord;
-import com.pragmaticobjects.oo.data.model.source.javapoet.DestFromProcessingEnvironment;
 import io.vavr.collection.List;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
@@ -39,17 +38,19 @@ import javax.lang.model.SourceVersion;
  */
 @SupportedAnnotationTypes({
     "com.pragmaticobjects.oo.data.anno.Scalar.List",
-    "com.pragmaticobjects.oo.data.anno.Scalar"
+    "com.pragmaticobjects.oo.data.anno.Scalar",
+    "com.pragmaticobjects.oo.data.anno.Structure.List",
+    "com.pragmaticobjects.oo.data.anno.Structure"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-public class ScalarJooqProcessor extends AbstractProcessor<Scalar> {
+public class ScalarJooqProcessor extends AbstractProcessor {
     /**
      * Ctor.
      */
     public ScalarJooqProcessor() {
         super(
-            Scalar.class,
-            (decl, mani, procEnv) -> List.of(new SrcFileScalarFromJooqRecord(decl, new DestFromProcessingEnvironment(procEnv)))
+            (decl, mani, dest) -> List.of(new SrcFileScalarFromJooqRecord(decl, dest)),
+            (decl, mani, dest) -> List.empty()
         );
     }
 }

@@ -24,8 +24,6 @@
 package com.pragmaticobjects.oo.data.value;
 
 import com.pragmaticobjects.oo.data.AbstractProcessor;
-import com.pragmaticobjects.oo.data.anno.Structure;
-import com.pragmaticobjects.oo.data.model.source.javapoet.DestFromProcessingEnvironment;
 import com.pragmaticobjects.oo.data.value.model.source.SrcFileStructureValue;
 import io.vavr.collection.List;
 
@@ -39,21 +37,23 @@ import javax.lang.model.SourceVersion;
  * @author skapral
  */
 @SupportedAnnotationTypes({
-    "com.pragmaticobjects.oo.data.anno.Structure",
+    "com.pragmaticobjects.oo.data.anno.Scalar.List",
+    "com.pragmaticobjects.oo.data.anno.Scalar",
     "com.pragmaticobjects.oo.data.anno.Structure.List",
+    "com.pragmaticobjects.oo.data.anno.Structure"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-public class StructureValueProcessor extends AbstractProcessor<Structure> {
+public class StructureValueProcessor extends AbstractProcessor {
     /**
      * Ctor.
      */
     public StructureValueProcessor() {
         super(
-            Structure.class,
-            (anno, mani, procEnv) -> List.of(
+            (anno, mani, dest) -> List.empty(),
+            (anno, mani, dest) -> List.of(
                 new SrcFileStructureValue(
                     anno,
-                    new DestFromProcessingEnvironment(procEnv),
+                    dest,
                     mani
                 )
             )
