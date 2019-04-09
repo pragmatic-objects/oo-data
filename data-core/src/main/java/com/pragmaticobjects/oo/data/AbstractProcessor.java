@@ -66,34 +66,42 @@ public abstract class AbstractProcessor extends javax.annotation.processing.Abst
 
     @Override
     public boolean process(java.util.Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        for (TypeElement annotation : annotations) {
-            for(PackageElement pkg : HashSet.of(roundEnv)
-                    .flatMap(env -> env.getElementsAnnotatedWith(annotation))
-                    .map(e -> (PackageElement) e)) {
-                final List<Import> imports = List.of(pkg.getAnnotationsByType(Import.class));
-                final List<PackageElement> importPackages = imports
-                        .map(i -> processingEnv.getElementUtils().getPackageElement(i.value()));
-                final Manifest localManifest = new ManifestFromPackageElement(pkg);
-                final Manifest contextManifest = new ManifestCombined(
-                    importPackages
-                        .<Manifest>map(ManifestFromPackageElement::new)
-                        .append(localManifest)
-                );
-                Destination dest = new DestDeduplicated(imports, processingEnv, new DestFromProcessingEnvironment(processingEnv));
-                for(Declaration<Scalar> declaration : List.ofAll(contextManifest.declarations(Scalar.class))) {
-                    scalarTasks.sourceFiles(
-                        declaration,
-                        contextManifest,
-                        dest
-                    ).forEach(SourceFile::generate);
-                }
-                for(Declaration<Structure> declaration : List.ofAll(contextManifest.declarations(Structure.class))) {
-                    structureTasks.sourceFiles(
-                        declaration,
-                        contextManifest,
-                        dest
-                    ).forEach(SourceFile::generate);
-                }
+        System.out.println(this.getClass().getName());
+        for(PackageElement pkg : HashSet.ofAll(annotations)
+                .flatMap(anno -> roundEnv.getElementsAnnotatedWith(anno))
+                .map(e -> (PackageElement) e)) {
+            System.out.println(">>>>" + pkg);
+            final List<Import> imports = List.of(pkg.getAnnotationsByType(Import.class));
+            final List<PackageElement> importPackages = imports
+                    .map(i -> processingEnv.getElementUtils().getPackageElement(i.value()));
+            final Manifest localManifest = new ManifestFromPackageElement(pkg);
+            final Manifest contextManifest = new ManifestCombined(
+                importPackages
+                    .<Manifest>map(ManifestFromPackageElement::new)
+                    .append(localManifest)
+            );
+            Destination dest = new DestDeduplicated(imports, processingEnv, new DestFromProcessingEnvironment(processingEnv));
+            System.out.println("AAA");
+            for(Declaration<Scalar> declaration : List.ofAll(contextManifest.declarations(Scalar.class))) {
+                System.out.println(declaration.annotation());
+                scalarTasks.sourceFiles(
+                    declaration,
+                    contextManifest,
+                    dest
+                ).forEach((sourceFile) -> {
+                    sourceFile.generate();
+                });
+            }
+            System.out.println("BBB");
+            for(Declaration<Structure> declaration : List.ofAll(contextManifest.declarations(Structure.class))) {
+                System.out.println(declaration.annotation());
+                structureTasks.sourceFiles(
+                    declaration,
+                    contextManifest,
+                    dest
+                ).forEach((sourceFile) -> {
+                    sourceFile.generate();
+                });
             }
         }
         return false;
