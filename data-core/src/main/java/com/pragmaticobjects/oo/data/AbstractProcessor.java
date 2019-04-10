@@ -66,11 +66,9 @@ public abstract class AbstractProcessor extends javax.annotation.processing.Abst
 
     @Override
     public boolean process(java.util.Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        System.out.println(this.getClass().getName());
         for(PackageElement pkg : HashSet.ofAll(annotations)
                 .flatMap(anno -> roundEnv.getElementsAnnotatedWith(anno))
                 .map(e -> (PackageElement) e)) {
-            System.out.println(">>>>" + pkg);
             final List<Import> imports = List.of(pkg.getAnnotationsByType(Import.class));
             final List<PackageElement> importPackages = imports
                     .map(i -> processingEnv.getElementUtils().getPackageElement(i.value()));
@@ -81,9 +79,7 @@ public abstract class AbstractProcessor extends javax.annotation.processing.Abst
                     .append(localManifest)
             );
             Destination dest = new DestDeduplicated(imports, processingEnv, new DestFromProcessingEnvironment(processingEnv));
-            System.out.println("AAA");
             for(Declaration<Scalar> declaration : List.ofAll(contextManifest.declarations(Scalar.class))) {
-                System.out.println(declaration.annotation());
                 scalarTasks.sourceFiles(
                     declaration,
                     contextManifest,
@@ -92,9 +88,7 @@ public abstract class AbstractProcessor extends javax.annotation.processing.Abst
                     sourceFile.generate();
                 });
             }
-            System.out.println("BBB");
             for(Declaration<Structure> declaration : List.ofAll(contextManifest.declarations(Structure.class))) {
-                System.out.println(declaration.annotation());
                 structureTasks.sourceFiles(
                     declaration,
                     contextManifest,
