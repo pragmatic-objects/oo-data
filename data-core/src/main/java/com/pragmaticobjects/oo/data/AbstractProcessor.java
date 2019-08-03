@@ -25,7 +25,6 @@
  */
 package com.pragmaticobjects.oo.data;
 
-import com.pragmaticobjects.oo.atom.anno.NotAtom;
 import com.pragmaticobjects.oo.data.anno.Import;
 import com.pragmaticobjects.oo.data.anno.Scalar;
 import com.pragmaticobjects.oo.data.anno.Structure;
@@ -50,7 +49,6 @@ import javax.lang.model.element.TypeElement;
  * 
  * @author skapral
  */
-@NotAtom
 public abstract class AbstractProcessor extends javax.annotation.processing.AbstractProcessor {
     private final GenerationTaskInference<Scalar> scalarTasks;
     private final GenerationTaskInference<Structure> structureTasks;
