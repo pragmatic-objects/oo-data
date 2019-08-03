@@ -14,7 +14,6 @@
         <dependency>
             <groupId>com.pragmaticobjects.oo.data</groupId>
             <artifactId>data-core</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
