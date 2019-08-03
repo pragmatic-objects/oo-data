@@ -25,7 +25,6 @@
  */
 package com.pragmaticobjects.oo.data.helpers;
 
-import com.pragmaticobjects.oo.atom.anno.NotAtom;
 import java.util.function.Supplier;
 
 /**
@@ -34,7 +33,6 @@ import java.util.function.Supplier;
  * @param <T> Supplier's return type
  * @author skapral
  */
-@NotAtom
 public class CachingSupplier<T> implements Supplier<T> {
     private final Supplier<T> source;
     private T result;
