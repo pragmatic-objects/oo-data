@@ -13,22 +13,18 @@
         <dependency>
             <groupId>com.pragmaticobjects.oo.data</groupId>
             <artifactId>data-scalar</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.pragmaticobjects.oo.data</groupId>
             <artifactId>data-struct</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.pragmaticobjects.oo.data</groupId>
             <artifactId>data-value</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.pragmaticobjects.oo.data</groupId>
             <artifactId>data-composite</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
